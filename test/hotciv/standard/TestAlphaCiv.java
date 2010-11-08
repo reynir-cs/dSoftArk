@@ -255,4 +255,10 @@ public class TestAlphaCiv {
 		   moveSuccessful);
 	checkUnitAtPosition(legion, settler.pos);
     }
+
+    @Test
+	public void redCityProductionAmountIs0AtFirstTurn() {
+	assertEquals("The production amount of the red city should be 0 in the first turn",
+		     0, game.getCityAt(new Position(1,1)).getProductionAmount());
+    }
 }
