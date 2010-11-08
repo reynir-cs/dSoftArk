@@ -1,0 +1,7 @@
+# Ignore Emacs auto-safe files
+*~
+# Ignore build-tree
+build/
+
+# Ignore generated javadoc
+doc/
