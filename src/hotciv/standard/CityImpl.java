@@ -19,5 +19,4 @@ public class CityImpl implements City {
 
     public String getProduction(){return null;}
     public String getWorkforceFocus(){return null;}
-    public int getProductionAmount(){return 0;}
 }

@@ -25,10 +25,12 @@ public class GameImpl implements Game {
     private Player inTurn;
     private int year;
     private Map<Position, Unit> units;
+    private int redCityProductionAmount;
 
     public GameImpl() {
 	inTurn = Player.RED;
 	year = -4000;
+	redCityProductionAmount = 0;
 	units = new HashMap<Position, Unit>();
 	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED));
 	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED));
@@ -100,10 +102,15 @@ public class GameImpl implements Game {
 	} else {
 	    inTurn = Player.RED;
 	    year += 100;
+	    redCityProductionAmount += 6;
 	}
     }
 
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
     public void changeProductionInCityAt( Position p, String unitType ) {}
     public void performUnitActionAt( Position p ) {}
+
+    public int getProductionAmountInCityAt(Position p) {
+	return redCityProductionAmount;
+    };
 }

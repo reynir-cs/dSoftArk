@@ -257,8 +257,18 @@ public class TestAlphaCiv {
     }
 
     @Test
-	public void redCityProductionAmountIs0AtFirstTurn() {
-	assertEquals("The production amount of the red city should be 0 in the first turn",
-		     0, game.getCityAt(new Position(1,1)).getProductionAmount());
+	public void redCityProductionAmountIs0AtFirstRound() {
+	assertEquals("The production amount of the red city should be 0 in the first round",
+		     0, game.getProductionAmountInCityAt(new Position(1,1)));
+    }
+
+    @Test
+	public void redCityProductionAmountIs6AtSecondRound() {
+	// Go to second round
+	game.endOfTurn();
+	game.endOfTurn();
+
+	assertEquals("The production amount of the red city should be 6 in the second round",
+		     6, game.getProductionAmountInCityAt(new Position(1,1)));
     }
 }
