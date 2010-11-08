@@ -351,4 +351,26 @@ public class TestAlphaCiv {
 				  Player.BLUE, GameConstants.ARCHER);
 	checkUnitAtPosition(u);
     }
+
+    /* Red should skip the mountain tile when placing the unit in that
+     * round */
+    @Test
+	public void redHasArcherOn2_1InRound10() {
+	/* Skip to round 10 */
+	endRound();
+	endRound();
+	endRound();
+	endRound();
+	endRound();
+
+	endRound();
+	endRound();
+	endRound();
+	endRound();
+	
+	UnitInfo u = new UnitInfo(redCityPosition.getRow()+1,
+				  redCityPosition.getColumn(),
+				  Player.RED, GameConstants.ARCHER);
+	checkUnitAtPosition(u);
+    }
 }

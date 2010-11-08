@@ -159,8 +159,11 @@ public class GameImpl implements Game {
 	for (int i = 0; i<9; i++) {
 	    Position p = new Position(city.getRow() + unitRowOffsets[i],
 				      city.getColumn() + unitColOffsets[i]);
-	    if (getUnitAt(p) == null)
+	    if (getUnitAt(p) == null &&
+		!getTileAt(p).getTypeString().equals(GameConstants.MOUNTAINS) &&
+		!getTileAt(p).getTypeString().equals(GameConstants.OCEANS)) {
 		return p;
+	    }
 	}
 	return null;
     }
