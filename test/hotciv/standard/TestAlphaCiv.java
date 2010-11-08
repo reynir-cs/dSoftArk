@@ -158,8 +158,7 @@ public class TestAlphaCiv {
 
     @Test
 	public void shouldBeAge3900BCInSecondRound() {
-	game.endOfTurn();
-	game.endOfTurn();
+	endRound();
 	int age = game.getAge();
 	assertEquals("The year should be 3900 BC in the second round",
 		     -3900, age);
@@ -267,8 +266,7 @@ public class TestAlphaCiv {
     @Test
 	public void redCityProductionAmountIs6AtSecondRound() {
 	// Go to second round
-	game.endOfTurn();
-	game.endOfTurn();
+	endRound();
 
 	assertEquals("The production amount of the red city should be 6 in the second round",
 		     6, game.getCityAt(redCityPosition).getProductionAmount());
@@ -295,5 +293,21 @@ public class TestAlphaCiv {
 	City c = game.getCityAt(blueCityPosition);
 	assertEquals("Blue city should produce legions",
 		     GameConstants.LEGION, c.getProduction());
+    }
+
+    private void endRound() {
+	game.endOfTurn();
+	game.endOfTurn();
+    }
+
+    @Test
+	public void blueShouldProduceAnArcherInThirdRoundOnCityTile() {
+	/* Fast forward to third round */
+	endRound();
+	endRound();
+
+	UnitInfo u = new UnitInfo(blueCityPosition.getRow(), blueCityPosition.getColumn(),
+				  Player.BLUE, GameConstants.ARCHER);
+	checkUnitAtPosition(u);
     }
 }

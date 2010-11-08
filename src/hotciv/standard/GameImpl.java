@@ -99,11 +99,29 @@ public class GameImpl implements Game {
 	    inTurn = Player.BLUE;
 	} else {
 	    inTurn = Player.RED;
-	    year += 100;
-	    for (Position p : cities.keySet()) {
-		City old = cities.get(p);
-		cities.put(p, new CityImpl(old.getOwner(), old.getProduction(),
-					   old.getProductionAmount() + 6));
+	    endOfRound();
+	}
+    }
+
+    private void endOfRound() {
+	year += 100;
+	incrementProductionAmount();
+	produceUnits();
+    }
+
+    private void incrementProductionAmount() {
+	for (Position p : cities.keySet()) {
+	    City old = cities.get(p);
+	    cities.put(p, new CityImpl(old.getOwner(), old.getProduction(),
+				       old.getProductionAmount() + 6));
+	}
+    }
+
+    private void produceUnits() {
+	for (Position p : cities.keySet()) {
+	    City c = cities.get(p);
+	    if (c.getProductionAmount() >= 10) {
+		units.put(p, new UnitImpl(GameConstants.ARCHER, c.getOwner()));
 	    }
 	}
     }
