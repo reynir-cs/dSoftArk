@@ -4,9 +4,11 @@ import hotciv.framework.*;
 
 public class CityImpl implements City {
     private Player owner;
+    private String production;
 
-    public CityImpl(Player owner) {
+    public CityImpl(Player owner, String production) {
 	this.owner = owner;
+	this.production = production;
     }
 
     public Player getOwner() {
@@ -17,6 +19,9 @@ public class CityImpl implements City {
 	return 1;
     }
 
-    public String getProduction(){return null;}
+    public String getProduction(){
+	return production;
+    }
+
     public String getWorkforceFocus(){return null;}
 }

@@ -26,11 +26,13 @@ public class GameImpl implements Game {
     private int year;
     private Map<Position, Unit> units;
     private int redCityProductionAmount;
+    private String redCityProduction;
 
     public GameImpl() {
 	inTurn = Player.RED;
 	year = -4000;
 	redCityProductionAmount = 0;
+	redCityProduction = GameConstants.ARCHER;
 	units = new HashMap<Position, Unit>();
 	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED));
 	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED));
@@ -53,9 +55,9 @@ public class GameImpl implements Game {
 
     public City getCityAt( Position p ) {
 	if (p.getRow() == 1 && p.getColumn() == 1)
-	    return new CityImpl(Player.RED);
+	    return new CityImpl(Player.RED, redCityProduction);
 	if (p.getRow() == 4 && p.getColumn() == 1)
-	    return new CityImpl(Player.BLUE);
+	    return new CityImpl(Player.BLUE, GameConstants.ARCHER);
 	return null;
     }
 
@@ -107,7 +109,11 @@ public class GameImpl implements Game {
     }
 
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
-    public void changeProductionInCityAt( Position p, String unitType ) {}
+
+    public void changeProductionInCityAt( Position p, String unitType ) {
+	redCityProduction = unitType;
+    }
+
     public void performUnitActionAt( Position p ) {}
 
     public int getProductionAmountInCityAt(Position p) {
