@@ -36,13 +36,11 @@
     <echo>
 HotCiv build management.
   Targets:
-    build-src:  Builds production code.
-    clean:      Removes all bytecode.
-    javadoc:    Generate JavaDoc (output in doc/index.html)
-    build-test: Build test code
-    build-all:  Build both production and test code
+    build-src: Builds production code.
+    clean:     Removes all bytecode.
+    javadoc:   Generate JavaDoc (output in doc/index.html)
 
-    test:       Run JUnit test cases.
+    test:      Run JUnit test cases.
 
     </echo>
   </target>
