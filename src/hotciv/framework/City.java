@@ -42,4 +42,9 @@ public interface City {
      * for valid return values.
      */
     public String getWorkforceFocus();
+
+    /** return the city's current amount of production
+     * @return an int specifying the city's current amount of production
+     */
+    public int getProductionAmount();
 }

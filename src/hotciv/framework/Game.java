@@ -122,10 +122,4 @@ public interface Game {
      * Nothing happens in case the unit has no associated action.
      */
     public void performUnitActionAt( Position p );
-
-    /** get the current unused production at a city
-     * Precondition: there is a city at location 'p'.
-     * @param p the position of the city that is queried
-     */
-    public int getProductionAmountInCityAt(Position p);
 }

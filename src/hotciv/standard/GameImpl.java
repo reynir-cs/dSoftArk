@@ -25,18 +25,18 @@ public class GameImpl implements Game {
     private Player inTurn;
     private int year;
     private Map<Position, Unit> units;
-    private int redCityProductionAmount;
-    private String redCityProduction;
+    private Map<Position, City> cities;
 
     public GameImpl() {
 	inTurn = Player.RED;
 	year = -4000;
-	redCityProductionAmount = 0;
-	redCityProduction = GameConstants.ARCHER;
 	units = new HashMap<Position, Unit>();
 	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED));
 	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED));
 	units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION, Player.BLUE));
+	cities = new HashMap<Position, City>();
+	cities.put(new Position(1,1), new CityImpl(Player.RED, GameConstants.ARCHER, 0));
+	cities.put(new Position(4,1), new CityImpl(Player.BLUE, GameConstants.ARCHER, 0));
     }
 
     public Tile getTileAt( Position p ) {
@@ -54,11 +54,7 @@ public class GameImpl implements Game {
     }
 
     public City getCityAt( Position p ) {
-	if (p.getRow() == 1 && p.getColumn() == 1)
-	    return new CityImpl(Player.RED, redCityProduction);
-	if (p.getRow() == 4 && p.getColumn() == 1)
-	    return new CityImpl(Player.BLUE, GameConstants.ARCHER);
-	return null;
+	return cities.get(p);
     }
 
     public Player getPlayerInTurn() {
@@ -104,19 +100,20 @@ public class GameImpl implements Game {
 	} else {
 	    inTurn = Player.RED;
 	    year += 100;
-	    redCityProductionAmount += 6;
+	    for (Position p : cities.keySet()) {
+		City old = cities.get(p);
+		cities.put(p, new CityImpl(old.getOwner(), old.getProduction(),
+					   old.getProductionAmount() + 6));
+	    }
 	}
     }
 
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
 
     public void changeProductionInCityAt( Position p, String unitType ) {
-	redCityProduction = unitType;
+	City old = cities.get(p);
+	cities.put(p, new CityImpl(old.getOwner(), unitType, old.getProductionAmount()));
     }
 
     public void performUnitActionAt( Position p ) {}
-
-    public int getProductionAmountInCityAt(Position p) {
-	return redCityProductionAmount;
-    };
 }

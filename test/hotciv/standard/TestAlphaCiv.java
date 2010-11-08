@@ -261,7 +261,7 @@ public class TestAlphaCiv {
     @Test
 	public void redCityProductionAmountIs0AtFirstRound() {
 	assertEquals("The production amount of the red city should be 0 in the first round",
-		     0, game.getProductionAmountInCityAt(redCityPosition));
+		     0, game.getCityAt(redCityPosition).getProductionAmount());
     }
 
     @Test
@@ -271,7 +271,7 @@ public class TestAlphaCiv {
 	game.endOfTurn();
 
 	assertEquals("The production amount of the red city should be 6 in the second round",
-		     6, game.getProductionAmountInCityAt(redCityPosition));
+		     6, game.getCityAt(redCityPosition).getProductionAmount());
     }
 
     @Test
@@ -287,5 +287,13 @@ public class TestAlphaCiv {
 	City c = game.getCityAt(redCityPosition);
 	assertEquals("Red city should produce archers initially",
 		     GameConstants.ARCHER, c.getProduction());
+    }
+
+    @Test
+	public void blueCanChangeProductionToLegion() {
+	game.changeProductionInCityAt(blueCityPosition, GameConstants.LEGION);
+	City c = game.getCityAt(blueCityPosition);
+	assertEquals("Blue city should produce legions",
+		     GameConstants.LEGION, c.getProduction());
     }
 }
