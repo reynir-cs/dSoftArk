@@ -310,4 +310,31 @@ public class TestAlphaCiv {
 				  Player.BLUE, GameConstants.ARCHER);
 	checkUnitAtPosition(u);
     }
+
+    @Test
+	public void blueShouldHave2ProductionInThirdRound() {
+	/* Fast forward to third round */
+	endRound();
+	endRound();
+
+	City c = game.getCityAt(blueCityPosition);
+	assertEquals("Blue should have 2 production in the third round",
+		     2, c.getProductionAmount());
+    }
+
+    @Test
+	public void blueProducesLegionInRound4() {
+	/* Set production to legion */
+	game.changeProductionInCityAt(blueCityPosition, GameConstants.LEGION);
+
+	/* Fast forward to round 4 */
+	endRound();
+	endRound();
+	endRound();
+
+	UnitInfo u = new UnitInfo(blueCityPosition.getRow(),
+				  blueCityPosition.getColumn(),
+				  Player.BLUE, GameConstants.LEGION);
+	checkUnitAtPosition(u);
+    }
 }

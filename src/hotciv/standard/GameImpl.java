@@ -120,8 +120,21 @@ public class GameImpl implements Game {
     private void produceUnits() {
 	for (Position p : cities.keySet()) {
 	    City c = cities.get(p);
-	    if (c.getProductionAmount() >= 10) {
-		units.put(p, new UnitImpl(GameConstants.ARCHER, c.getOwner()));
+	    String type = c.getProduction();
+	    int cost = 0;
+
+	    if (type.equals(GameConstants.ARCHER)) {
+		cost = 10;
+	    } else if (type.equals(GameConstants.LEGION)) {
+		cost = 15;
+	    } else if (type.equals(GameConstants.SETTLER)) {
+		cost = 30;
+	    } 
+
+	    if (c.getProductionAmount() >= cost) {
+		units.put(p, new UnitImpl(type, c.getOwner()));
+		cities.put(p, new CityImpl(c.getOwner(), type,
+					   c.getProductionAmount() - cost));
 	    }
 	}
     }
