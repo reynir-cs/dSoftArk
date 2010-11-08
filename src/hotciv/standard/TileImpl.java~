@@ -1,0 +1,6 @@
+package hotciv.standard;
+
+public class Tile() {
+    public Position getPosition() { return null; }
+    public String getTypeString() { return GameConstants.OCEANS; }
+}

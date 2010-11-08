@@ -1,0 +1,19 @@
+To make this filter work do the following:
+--------------------------------------------------------------------------------
+a) 'cd' to the project root directory (e.g. TDD-Exercise-E08)
+
+b) add this directory (tools) containing the files
+   FilterTestRunner.java and FilteredTextListener.java to the 
+   directory: test/hotciv
+
+c) In the build.xml file in the "test" target section, the line
+   <java classname="org.junit.runner.JUnitCore">
+   should be changed to:
+   <java classname="hotciv.tools.FilterTestRunner">
+
+--------------------------------------------------------------------------------
+
+This gives a much shorter Junit4 stacktrace by failures.
+If you find the stacktrace to short, it can easily be modified
+in the filterOut() method in the FilteredTextListener.java file. 
+
