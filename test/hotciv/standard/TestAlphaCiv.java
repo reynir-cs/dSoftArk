@@ -24,6 +24,8 @@ commercial use, see http://www.baerbak.com/
 public class TestAlphaCiv {
     private static Position mountainPosition = new Position(2,2);
     private static Position oceanPosition = new Position(1,0);
+    private static Position redCityPosition = new Position(1,1);
+    private static Position blueCityPosition = new Position(4,1);
     private Game game;
     private UnitInfo archer;
     private UnitInfo legion;
@@ -52,27 +54,27 @@ public class TestAlphaCiv {
 
     @Test
 	public void shouldHaveRedCityAt1_1() {
-	City c = game.getCityAt(new Position(1,1));
-	assertNotNull("There should be a city at (1,1)", c);
+	City c = game.getCityAt(redCityPosition);
+	assertNotNull("There should be a city at " + redCityPosition, c);
 	Player p = c.getOwner();
-	assertEquals( "City at (1,1) should be owned by red",
+	assertEquals( "City at " + redCityPosition + " should be owned by red",
 		      Player.RED, p );
     }
 
     @Test
 	public void shouldHaveBlueCityAt4_1() {
-	City c = game.getCityAt(new Position(4,1));
-	assertNotNull("There should be a city at (4,1)", c);
+	City c = game.getCityAt(blueCityPosition);
+	assertNotNull("There should be a city at " + blueCityPosition, c);
 	Player p = c.getOwner();
-	assertEquals( "City at (4,1) should be owned by blue",
+	assertEquals( "City at " + blueCityPosition + " should be owned by blue",
 		      Player.BLUE, p );
     }
 
     @Test
 	public void shouldHaveOceanAt1_0() {
-        Tile t = game.getTileAt(new Position(1,0));
-	assertNotNull("There should be a tile at (1,0)", t);
-	assertEquals( "Tile at (1,0) should be ocean",
+        Tile t = game.getTileAt(oceanPosition);
+	assertNotNull("There should be a tile at " + oceanPosition, t);
+	assertEquals( "Tile at " + oceanPosition + " should be ocean",
 		      GameConstants.OCEANS, t.getTypeString() );
     }
 
@@ -94,9 +96,9 @@ public class TestAlphaCiv {
 
     @Test
 	public void shouldHaveMountainsAt2_2() {
-        Tile t = game.getTileAt(new Position(2,2));
-	assertNotNull("There should be a tile at (2,2)", t);
-	assertEquals( "Tile at (2,2) should be mountains",
+        Tile t = game.getTileAt(mountainPosition);
+	assertNotNull("There should be a tile at " + mountainPosition, t);
+	assertEquals( "Tile at " + mountainPosition + " should be mountains",
 		      GameConstants.MOUNTAINS, t.getTypeString() );
     }
 
@@ -259,7 +261,7 @@ public class TestAlphaCiv {
     @Test
 	public void redCityProductionAmountIs0AtFirstRound() {
 	assertEquals("The production amount of the red city should be 0 in the first round",
-		     0, game.getProductionAmountInCityAt(new Position(1,1)));
+		     0, game.getProductionAmountInCityAt(redCityPosition));
     }
 
     @Test
@@ -269,6 +271,6 @@ public class TestAlphaCiv {
 	game.endOfTurn();
 
 	assertEquals("The production amount of the red city should be 6 in the second round",
-		     6, game.getProductionAmountInCityAt(new Position(1,1)));
+		     6, game.getProductionAmountInCityAt(redCityPosition));
     }
 }
