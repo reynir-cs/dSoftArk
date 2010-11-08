@@ -144,10 +144,13 @@ public class GameImpl implements Game {
 
     /**
      * The offsets are prioritized like this:
-     * 8 1 2
-     * 7 0 3
-     * 6 5 4
-     * TODO: Needs more ASCII-art!
+       +-+-+-+
+     * |8|1|2|
+     * +-+-+-+
+     * |7|0|3|
+     * +-+-+-+
+     * |6|5|4|
+     * +-+-+-+
      */
     private int[] unitColOffsets = { 0, 0, 1, 1, 1, 0, -1, -1, -1 };
     private int[] unitRowOffsets = { 0, -1, -1, 0, 1, 1, 1, 0, -1 };
