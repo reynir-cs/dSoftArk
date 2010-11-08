@@ -132,11 +132,34 @@ public class GameImpl implements Game {
 	    } 
 
 	    if (c.getProductionAmount() >= cost) {
-		units.put(p, new UnitImpl(type, c.getOwner()));
-		cities.put(p, new CityImpl(c.getOwner(), type,
-					   c.getProductionAmount() - cost));
+		Position free = getNextFreeUnitPosition(p);
+		if (free != null) {
+		    units.put(free, new UnitImpl(type, c.getOwner()));
+		    cities.put(p, new CityImpl(c.getOwner(), type,
+					       c.getProductionAmount() - cost));
+		}
 	    }
 	}
+    }
+
+    /**
+     * The offsets are prioritized like this:
+     * 8 1 2
+     * 7 0 3
+     * 6 5 4
+     * TODO: Needs more ASCII-art!
+     */
+    private int[] unitColOffsets = { 0, 0, 1, 1, 1, 0, -1, -1, -1 };
+    private int[] unitRowOffsets = { 0, -1, -1, 0, 1, 1, 1, 0, -1 };
+
+    private Position getNextFreeUnitPosition(Position city) {
+	for (int i = 0; i<9; i++) {
+	    Position p = new Position(city.getRow() + unitRowOffsets[i],
+				      city.getColumn() + unitColOffsets[i]);
+	    if (getUnitAt(p) == null)
+		return p;
+	}
+	return null;
     }
 
     public void changeWorkForceFocusInCityAt( Position p, String balance ) {}

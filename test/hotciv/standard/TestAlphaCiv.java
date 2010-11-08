@@ -337,4 +337,18 @@ public class TestAlphaCiv {
 				  Player.BLUE, GameConstants.LEGION);
 	checkUnitAtPosition(u);
     }
+
+    @Test
+	public void blueHasArcherIn3_1InRound5() {
+	/* Fast forward to round 5 */
+	endRound();
+	endRound();
+	endRound();
+	endRound();
+
+	UnitInfo u = new UnitInfo(blueCityPosition.getRow()-1,
+				  blueCityPosition.getColumn(),
+				  Player.BLUE, GameConstants.ARCHER);
+	checkUnitAtPosition(u);
+    }
 }
