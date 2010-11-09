@@ -31,9 +31,9 @@ public class GameImpl implements Game {
 	inTurn = Player.RED;
 	year = -4000;
 	units = new HashMap<Position, Unit>();
-	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED));
-	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED));
-	units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION, Player.BLUE));
+	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED, year - 1));
+	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED, year - 1));
+	units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION, Player.BLUE, year - 1));
 	cities = new HashMap<Position, City>();
 	cities.put(new Position(1,1), new CityImpl(Player.RED, GameConstants.ARCHER, 0));
 	cities.put(new Position(4,1), new CityImpl(Player.BLUE, GameConstants.ARCHER, 0));
@@ -71,11 +71,15 @@ public class GameImpl implements Game {
 	return year;
     }
 
-    private boolean isValidMove(Position from, Position to) {
-	String tileType = getTileAt(to).getTypeString();
-
-	boolean legalTileType = !tileType.equals(GameConstants.MOUNTAINS)
+    private boolean unitCanMoveOnTile(Tile t) {
+	String tileType = t.getTypeString();
+	return !tileType.equals(GameConstants.MOUNTAINS)
 	    && !tileType.equals(GameConstants.OCEANS);
+    }
+
+    private boolean isValidMove(Position from, Position to) {
+	Tile targetTile = getTileAt(to);
+	boolean legalTileType = unitCanMoveOnTile(targetTile);
 	boolean legalDistance = Math.abs(to.getRow() - from.getRow()) <= 1
 	    && Math.abs(to.getColumn() - from.getColumn()) <= 1;
 
@@ -89,8 +93,13 @@ public class GameImpl implements Game {
     public boolean moveUnit(Position from, Position to) {
 	if (!isValidMove(from, to))
 	    return false;
-	Unit u = units.remove(from);
-	units.put(to, u);
+	Unit u = units.get(from);
+	if (u.getLastMoved() == year)
+	    return false;
+
+	units.remove(from);
+	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
+	units.put(to, newUnit);
 	return true;
     }
 
@@ -134,7 +143,7 @@ public class GameImpl implements Game {
 	    if (c.getProductionAmount() >= cost) {
 		Position free = getNextFreeUnitPosition(p);
 		if (free != null) {
-		    units.put(free, new UnitImpl(type, c.getOwner()));
+		    units.put(free, new UnitImpl(type, c.getOwner(), year - 1));
 		    cities.put(p, new CityImpl(c.getOwner(), type,
 					       c.getProductionAmount() - cost));
 		}
@@ -144,13 +153,14 @@ public class GameImpl implements Game {
 
     /**
      * The offsets are prioritized like this:
-       +-+-+-+
+     * +-+-+-+
      * |8|1|2|
      * +-+-+-+
      * |7|0|3|
      * +-+-+-+
      * |6|5|4|
      * +-+-+-+
+     * Where 0 is the city it is produced.
      */
     private int[] unitColOffsets = { 0, 0, 1, 1, 1, 0, -1, -1, -1 };
     private int[] unitRowOffsets = { 0, -1, -1, 0, 1, 1, 1, 0, -1 };
@@ -172,6 +182,8 @@ public class GameImpl implements Game {
 
     public void changeProductionInCityAt( Position p, String unitType ) {
 	City old = cities.get(p);
+	if (old.getOwner() != inTurn)
+	    return;
 	cities.put(p, new CityImpl(old.getOwner(), unitType, old.getProductionAmount()));
     }
 

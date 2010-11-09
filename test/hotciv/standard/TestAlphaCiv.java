@@ -289,6 +289,7 @@ public class TestAlphaCiv {
 
     @Test
 	public void blueCanChangeProductionToLegion() {
+	game.endOfTurn();
 	game.changeProductionInCityAt(blueCityPosition, GameConstants.LEGION);
 	City c = game.getCityAt(blueCityPosition);
 	assertEquals("Blue city should produce legions",
@@ -324,11 +325,12 @@ public class TestAlphaCiv {
 
     @Test
 	public void blueProducesLegionInRound4() {
+	game.endOfTurn(); // Give blue the turn
 	/* Set production to legion */
 	game.changeProductionInCityAt(blueCityPosition, GameConstants.LEGION);
+	game.endOfTurn(); // Go to round 2
 
 	/* Fast forward to round 4 */
-	endRound();
 	endRound();
 	endRound();
 
@@ -352,8 +354,10 @@ public class TestAlphaCiv {
 	checkUnitAtPosition(u);
     }
 
-    /* Red should skip the mountain tile when placing the unit in that
-     * round */
+    /**
+     * Red should skip the mountain tile when placing the unit in that
+     * round 
+     */
     @Test
 	public void redHasArcherOn2_1InRound10() {
 	/* Skip to round 10 */
@@ -372,5 +376,28 @@ public class TestAlphaCiv {
 				  redCityPosition.getColumn(),
 				  Player.RED, GameConstants.ARCHER);
 	checkUnitAtPosition(u);
+    }
+
+    @Test
+	public void redCannotChangeBluesProduction() {
+	game.changeProductionInCityAt(blueCityPosition, GameConstants.SETTLER);
+	City c = game.getCityAt(blueCityPosition);
+	assertEquals("Red should not be abel to change the production in blue's city",
+		     GameConstants.ARCHER, c.getProduction());
+    }
+
+    @Test
+	public void redArcherCannotMoveTwiceInTurnOne() {
+	Position start = archer.pos;
+	Position t1 = new Position(start.getRow() + 1, start.getColumn());
+	Position t2 = new Position(t1.getRow() + 1, t1.getColumn());
+	
+	checkUnitAtPosition(archer);
+	game.moveUnit(start, t1);
+	checkUnitAtPosition(archer,t1);
+
+	game.moveUnit(t1, t2);
+	assertNull("The archer should not be allowed to move twice in one round",
+		   game.getUnitAt(t2));
     }
 }
