@@ -57,4 +57,13 @@ public class Position {
   public String toString() {
     return "["+r+","+c+"]";
   }
+
+  public static int distance(Position from, Position to) {
+    int drow, dcol;
+
+    drow = Math.abs(from.getRow() - to.getRow());
+    dcol = Math.abs(from.getColumn() - to.getColumn());
+
+    return Math.max(drow, dcol);
+  }
 }
