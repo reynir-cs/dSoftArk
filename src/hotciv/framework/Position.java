@@ -66,4 +66,8 @@ public class Position {
 
     return Math.max(drow, dcol);
   }
+
+  public static Position translate(Position pos, int drow, int dcol) {
+    return new Position(pos.r+drow, pos.c+dcol);
+  }
 }
