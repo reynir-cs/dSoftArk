@@ -5,3 +5,6 @@ build/
 
 # Ignore generated javadoc
 doc/
+
+# Ignore document dir
+documents/
