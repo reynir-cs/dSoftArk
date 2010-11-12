@@ -26,8 +26,12 @@ public class GameImpl implements Game {
     private int year;
     private Map<Position, Unit> units;
     private Map<Position, City> cities;
+    private AgingStrategy agingStrategy;
+    private WinningStrategy winningStrategy;
 
-    public GameImpl() {
+    public GameImpl(AgingStrategy agingStrategy, WinningStrategy winningStrategy) {
+	this.agingStrategy = agingStrategy;
+	this.winningStrategy = winningStrategy;
 	inTurn = Player.RED;
 	year = -4000;
 	units = new HashMap<Position, Unit>();
@@ -62,9 +66,7 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-	if (year >= -3000)
-	    return Player.RED;
-	return null;
+	return winningStrategy.getWinner(this);
     }
     
     public int getAge() {
@@ -113,7 +115,7 @@ public class GameImpl implements Game {
     }
 
     private void endOfRound() {
-	year += 100;
+	year = agingStrategy.getYear(year);
 	incrementProductionAmount();
 	produceUnits();
     }

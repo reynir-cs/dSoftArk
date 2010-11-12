@@ -46,7 +46,7 @@ public class TestAlphaCiv {
     /** Fixture for alphaciv testing. */
     @Before
 	public void setUp() {
-	game = new GameImpl();
+	game = new GameImpl(new LinearAgingStrategy(), new SimpleWinningStrategy());
 	archer = new UnitInfo(2, 0, Player.RED, GameConstants.ARCHER);
 	legion = new UnitInfo(3, 2, Player.BLUE, GameConstants.LEGION);
 	settler = new UnitInfo(4, 3, Player.RED, GameConstants.SETTLER);
