@@ -57,8 +57,7 @@ public class GameImpl implements Game {
     }
 
     public Tile getTileAt( Position p ) {
-	Tile t = world.get(p);
-	return (t == null) ? new TileImpl(p, GameConstants.PLAINS) : t;
+        return world.get(p);
     }
 
     public Unit getUnitAt( Position p ) {
