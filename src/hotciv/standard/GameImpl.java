@@ -30,10 +30,13 @@ public class GameImpl implements Game {
     private Map<Position, City> cities;
     private AgingStrategy agingStrategy;
     private WinningStrategy winningStrategy;
+    private ActionStrategy actionStrategy;
 
-    public GameImpl(AgingStrategy agingStrategy, WinningStrategy winningStrategy) {
+    public GameImpl(AgingStrategy agingStrategy, WinningStrategy winningStrategy,
+                    ActionStrategy actionStrategy) {
 	this.agingStrategy = agingStrategy;
 	this.winningStrategy = winningStrategy;
+        this.actionStrategy = actionStrategy;
 	inTurn = Player.RED;
 	year = -4000;
 	units = new HashMap<Position, Unit>();
@@ -196,7 +199,9 @@ public class GameImpl implements Game {
 	cities.put(p, new CityImpl(old.getOwner(), unitType, old.getProductionAmount()));
     }
 
-    public void performUnitActionAt( Position p ) {}
+    public void performUnitActionAt( Position p ) {
+        actionStrategy.performUnitActionAt(this, p);
+    }
 
     public Collection<City> getCities() {
         return Collections.unmodifiableCollection(cities.values());
