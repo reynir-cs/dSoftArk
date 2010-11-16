@@ -25,10 +25,6 @@ public class TestBetaCiv {
     }
 
     @Test
-	public void test() {
-    }
-
-    @Test
 	public void yearInSecondRoundIs3900BC() {
 	endRound();
 	assertEquals("The year in second round should be 3900BC",
@@ -89,5 +85,35 @@ public class TestBetaCiv {
 	skipNRounds(126);
 	assertEquals("The year in round 127 should be 2000 AD",
 		     2000, game.getAge());
+    }
+
+    @Test
+        public void blueWinsAfterConqueringRedCity() {
+        Position redCityPosition = new Position(1,1);
+        Position blueLegionStart = new Position(3,2);
+        game.endOfTurn();
+        game.moveUnit(blueLegionStart, new Position(2,1));
+        endRound();
+        game.moveUnit(new Position(2,1), redCityPosition);
+        City redCity = game.getCityAt(redCityPosition);
+        assertEquals("Blue should become the owner of red's city after moving his legion "
+                     + "onto it", Player.BLUE, redCity.getOwner());
+        assertEquals("Blue should win after conquering red's city",
+                     Player.BLUE, game.getWinner());
+    }
+
+    @Test
+        public void redWinsAfterConqueringBlueCity() {
+        Position blueCityPosition = new Position(4,1);
+        Position redArcherStart = new Position(2,0);
+        game.moveUnit(redArcherStart, new Position(3,1));
+        endRound();
+        game.moveUnit(new Position(3,1), blueCityPosition);
+        City blueCity = game.getCityAt(blueCityPosition);
+        assertEquals("Red should become the owner of blue's city after moving his archer "
+                     + "onto it", Player.RED, blueCity.getOwner());
+        assertEquals("Red should win after conquering blue's city",
+                     Player.RED, game.getWinner());
+
     }
 }
