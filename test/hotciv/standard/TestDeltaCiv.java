@@ -41,4 +41,11 @@ public class TestDeltaCiv {
             assertNotNull("Red should have a city here.",
                     game.getCityAt(new Position(8,12)));
         }
+    
+    @Test
+        public void thereIsOceanAt0_0() {
+            assertEquals("There should be ocean at (0,0).",
+                    GameConstants.OCEANS, game.getTileAt(
+                        new Position(0,0)).getTypeString());
+        }
 }
