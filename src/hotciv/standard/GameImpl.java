@@ -3,6 +3,8 @@ package hotciv.standard;
 import hotciv.framework.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
+import java.util.Collection;
 
 /** Skeleton implementation of HotCiv.
  
@@ -111,6 +113,11 @@ public class GameImpl implements Game {
 	units.remove(from);
 	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
 	units.put(to, newUnit);
+        if (getCityAt(to) != null) {
+            City conquered = getCityAt(to);
+            cities.put(to, new CityImpl(u.getOwner(), conquered.getProduction(),
+                                        conquered.getProductionAmount()));
+        }
 	return true;
     }
 
@@ -201,5 +208,9 @@ public class GameImpl implements Game {
 
     public void performUnitActionAt( Position p ) {
         units.put(p, actionStrategy.performUnitActionAt(this, p));
+    }
+
+    public Collection<City> getCities() {
+        return Collections.unmodifiableCollection(cities.values());
     }
 }

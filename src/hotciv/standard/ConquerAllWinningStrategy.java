@@ -1,9 +1,18 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
+import java.util.Collection;
 
 public class ConquerAllWinningStrategy implements WinningStrategy {
     public Player getWinner(Game game) {
-	return null;
+        Collection<City> cities = game.getCities();
+        Player winner = null;
+        for (City c : cities) {
+            if (winner == null)
+                winner = c.getOwner();
+            if (c.getOwner() != winner)
+                return null;
+        }
+        return winner;
     }
 }

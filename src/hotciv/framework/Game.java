@@ -1,5 +1,7 @@
 package hotciv.framework;
 
+import java.util.Collection;
+
 /** Game is the central interface allowing a client to access and
  * modify the state of a HotCiv game.  
  This source code is from the book 
@@ -122,4 +124,7 @@ public interface Game {
      * Nothing happens in case the unit has no associated action.
      */
     public void performUnitActionAt( Position p );
+
+    /** return an unmodifiable view of the game's cities */
+    public Collection<City> getCities();
 }
