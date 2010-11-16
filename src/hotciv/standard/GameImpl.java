@@ -28,19 +28,27 @@ public class GameImpl implements Game {
     private Map<Position, City> cities;
     private AgingStrategy agingStrategy;
     private WinningStrategy winningStrategy;
+    private ActionStrategy actionStrategy;
 
-    public GameImpl(AgingStrategy agingStrategy, WinningStrategy winningStrategy) {
+    public GameImpl(AgingStrategy agingStrategy, 
+            WinningStrategy winningStrategy, ActionStrategy actionStrategy) {
 	this.agingStrategy = agingStrategy;
 	this.winningStrategy = winningStrategy;
+        this.actionStrategy = actionStrategy;
 	inTurn = Player.RED;
 	year = -4000;
 	units = new HashMap<Position, Unit>();
-	units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER, Player.RED, year - 1));
-	units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER, Player.RED, year - 1));
-	units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION, Player.BLUE, year - 1));
+        units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER,
+                    Player.RED, year - 1));
+        units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER,
+                    Player.RED, year - 1));
+        units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
+                    Player.BLUE, year - 1));
 	cities = new HashMap<Position, City>();
-	cities.put(new Position(1,1), new CityImpl(Player.RED, GameConstants.ARCHER, 0));
-	cities.put(new Position(4,1), new CityImpl(Player.BLUE, GameConstants.ARCHER, 0));
+        cities.put(new Position(1,1), new CityImpl(Player.RED,
+                    GameConstants.ARCHER, 0));
+        cities.put(new Position(4,1), new CityImpl(Player.BLUE,
+                    GameConstants.ARCHER, 0));
     }
 
     public Tile getTileAt( Position p ) {
@@ -86,10 +94,11 @@ public class GameImpl implements Game {
 	    && Math.abs(to.getColumn() - from.getColumn()) <= 1;
 
 	Unit u = getUnitAt(from);
+        boolean isFortified = u.isFortified();
 	Player p = u.getOwner();
 	boolean isOwner = (p == inTurn);
 
-	return legalTileType && legalDistance && isOwner;
+        return legalTileType && legalDistance && isOwner && !isFortified;
     }
 
     public boolean moveUnit(Position from, Position to) {
@@ -186,8 +195,11 @@ public class GameImpl implements Game {
 	City old = cities.get(p);
 	if (old.getOwner() != inTurn)
 	    return;
-	cities.put(p, new CityImpl(old.getOwner(), unitType, old.getProductionAmount()));
+        cities.put(p, new CityImpl(old.getOwner(), unitType,
+                    old.getProductionAmount()));
     }
 
-    public void performUnitActionAt( Position p ) {}
+    public void performUnitActionAt( Position p ) {
+        units.put(p, actionStrategy.performUnitActionAt(this, p));
+    }
 }

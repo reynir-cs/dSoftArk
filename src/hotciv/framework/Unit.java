@@ -57,4 +57,7 @@ public interface Unit {
      * @return year of units last movement
      */
     public int getLastMoved();
+
+    /** return wether the unit is fortified */
+    public boolean isFortified();
 }

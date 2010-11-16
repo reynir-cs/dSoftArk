@@ -17,8 +17,7 @@
    commercial use, see http://www.baerbak.com/
 -->
 <project name="HotCiv" default="help" basedir=".">
-
-  <property name="source-directory" value="src"/>
+<property name="source-directory" value="src"/>
   <property name="test-source-directory" value="test"/>
 
   <property name="build-directory" value="build"/>
@@ -107,6 +106,7 @@ HotCiv build management.
     <java classname="org.junit.runner.JUnitCore">
       <arg value="hotciv.standard.TestAlphaCiv"/>
       <arg value="hotciv.standard.TestBetaCiv"/>
+      <arg value="hotciv.standard.TestGammaCiv"/>
       <classpath refid="class-path"/>
     </java>
   </target>
