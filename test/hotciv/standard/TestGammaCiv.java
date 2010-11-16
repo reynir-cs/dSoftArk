@@ -10,9 +10,11 @@ public class TestGammaCiv {
 
     @Before
         public void setUp() {
-            game = new GameImpl(new LinearAgingStrategy(),
-                    new SimpleWinningStrategy(), 
-                    new SettlerAndArcherActionStrategy());
+	game = new GameImpl(new LinearAgingStrategy(),
+			    new SimpleWinningStrategy(),
+			    new SettlerAndArcherActionStrategy(),
+			    new SimpleCityLayoutStrategy(),
+			    new SimpleWorldLayoutStrategy());
         }
 
     @Test

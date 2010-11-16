@@ -28,17 +28,22 @@ public class GameImpl implements Game {
     private int year;
     private Map<Position, Unit> units;
     private Map<Position, City> cities;
+    private Map<Position, Tile> world;
     private AgingStrategy agingStrategy;
     private WinningStrategy winningStrategy;
     private ActionStrategy actionStrategy;
 
-    public GameImpl(AgingStrategy agingStrategy, 
-            WinningStrategy winningStrategy, ActionStrategy actionStrategy) {
+    public GameImpl(AgingStrategy agingStrategy,
+		    WinningStrategy winningStrategy,
+		    ActionStrategy actionStrategy,
+		    CityLayoutStrategy cityLayoutStrategy,
+		    WorldLayoutStrategy worldLayoutStrategy) {
 	this.agingStrategy = agingStrategy;
 	this.winningStrategy = winningStrategy;
         this.actionStrategy = actionStrategy;
 	inTurn = Player.RED;
 	year = -4000;
+
 	units = new HashMap<Position, Unit>();
         units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER,
                     Player.RED, year - 1));
@@ -46,19 +51,14 @@ public class GameImpl implements Game {
                     Player.RED, year - 1));
         units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
                     Player.BLUE, year - 1));
-	cities = new HashMap<Position, City>();
-	cities.put(new Position(1,1), new CityImpl(Player.RED));
-        cities.put(new Position(4,1), new CityImpl(Player.BLUE));
+
+	cities = cityLayoutStrategy.getCities();
+	world = worldLayoutStrategy.getWorld();
     }
 
     public Tile getTileAt( Position p ) {
-	if (p.getRow() == 1 && p.getColumn() == 0)
-	    return new TileImpl(p,GameConstants.OCEANS);
-	if (p.getRow() == 0 && p.getColumn() == 1)
-	    return new TileImpl(p,GameConstants.HILLS);
-	if (p.getRow() == 2 && p.getColumn() == 2)
-	    return new TileImpl(p,GameConstants.MOUNTAINS);
-	return new TileImpl(p,GameConstants.PLAINS);
+	Tile t = world.get(p);
+	return (t == null) ? new TileImpl(p, GameConstants.PLAINS) : t;
     }
 
     public Unit getUnitAt( Position p ) {

@@ -10,8 +10,11 @@ public class TestBetaCiv {
 
     @Before
 	public void setUp() {
-	game = new GameImpl(new SlowingAgingStrategy(), 
-                new ConquerAllWinningStrategy(), new VoidActionStrategy());
+	game = new GameImpl(new SlowingAgingStrategy(),
+			    new ConquerAllWinningStrategy(),
+			    new VoidActionStrategy(),
+			    new SimpleCityLayoutStrategy(),
+			    new SimpleWorldLayoutStrategy());
     }
     
     private void endRound() {
