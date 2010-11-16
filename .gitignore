@@ -8,3 +8,9 @@ doc/
 
 # Ignore document dir
 documents/
+
+# Vim backup files
+.*.sw?
+
+# ctags file
+tags
