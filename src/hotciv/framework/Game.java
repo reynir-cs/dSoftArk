@@ -127,4 +127,10 @@ public interface Game {
 
     /** return an unmodifiable view of the game's cities */
     public Collection<City> getCities();
+
+    /** add city c at position p.
+     * Precondition: there is not a city at location 'p'.
+     * @param p the position where the new city should be added
+     */
+    public void addCityAt( Position p, City c );
 }

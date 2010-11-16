@@ -32,5 +32,19 @@ public class TestGammaCiv {
             assertEquals("Archer's defensive strength should be doubled.",
                     6, u.getDefensiveStrength());
         }
-            
+
+    @Test
+	public void redSettlerIsRemovedAfterPerformingItsAction() {
+	game.performUnitActionAt(new Position(4,3));
+	assertNull("Red settler should be removed after performing its action",
+		   game.getUnitAt(new Position(4,3)));
+    }
+
+    @Test
+	public void redSettlerBuildsRedCityAt4_3() {
+	Position p = new Position(4,3);
+	game.performUnitActionAt(p);
+	assertNotNull("Red settler should have built a city at " + p,
+		      game.getCityAt(p));
+    }
 }

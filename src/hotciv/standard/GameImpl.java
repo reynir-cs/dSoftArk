@@ -47,10 +47,8 @@ public class GameImpl implements Game {
         units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
                     Player.BLUE, year - 1));
 	cities = new HashMap<Position, City>();
-        cities.put(new Position(1,1), new CityImpl(Player.RED,
-                    GameConstants.ARCHER, 0));
-        cities.put(new Position(4,1), new CityImpl(Player.BLUE,
-                    GameConstants.ARCHER, 0));
+	cities.put(new Position(1,1), new CityImpl(Player.RED));
+        cities.put(new Position(4,1), new CityImpl(Player.BLUE));
     }
 
     public Tile getTileAt( Position p ) {
@@ -212,5 +210,9 @@ public class GameImpl implements Game {
 
     public Collection<City> getCities() {
         return Collections.unmodifiableCollection(cities.values());
+    }
+
+    public void addCityAt(Position p, City c) {
+	cities.put(p, c);
     }
 }

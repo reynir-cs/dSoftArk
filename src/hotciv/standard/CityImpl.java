@@ -7,6 +7,10 @@ public class CityImpl implements City {
     private final String production;
     private final int productionAmount;
 
+    public CityImpl(Player owner) {
+	this(owner, GameConstants.ARCHER, 0);
+    }
+
     public CityImpl(Player owner, String production, int productionAmount) {
 	this.owner = owner;
 	this.production = production;
