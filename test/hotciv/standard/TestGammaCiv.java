@@ -14,7 +14,8 @@ public class TestGammaCiv {
 			    new SimpleWinningStrategy(),
 			    new SettlerAndArcherActionStrategy(),
 			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy());
+			    new SimpleWorldLayoutStrategy(),
+			    new SimpleFightingStrategy());
         }
 
     @Test

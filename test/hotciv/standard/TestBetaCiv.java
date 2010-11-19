@@ -14,7 +14,8 @@ public class TestBetaCiv {
 			    new ConquerAllWinningStrategy(),
 			    new VoidActionStrategy(),
 			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy());
+			    new SimpleWorldLayoutStrategy(),
+			    new SimpleFightingStrategy());
     }
     
     private void endRound() {

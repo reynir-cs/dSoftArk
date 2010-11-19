@@ -30,10 +30,11 @@ public class TestDeltaCiv {
             };
 
             game = new GameImpl(new LinearAgingStrategy(),
-			    new SimpleWinningStrategy(),
-                            new VoidActionStrategy(),
-                            new DoooooItHippieCityMonster(),
-                            new DynamicWorldLayoutStrategy(layout));
+				new SimpleWinningStrategy(),
+				new VoidActionStrategy(),
+				new DoooooItHippieCityMonster(),
+				new DynamicWorldLayoutStrategy(layout),
+				new SimpleFightingStrategy());
         }
 
     @Test

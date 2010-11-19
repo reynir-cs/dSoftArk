@@ -32,15 +32,18 @@ public class GameImpl implements Game {
     private AgingStrategy agingStrategy;
     private WinningStrategy winningStrategy;
     private ActionStrategy actionStrategy;
+    private FightingStrategy fightingStrategy;
 
     public GameImpl(AgingStrategy agingStrategy,
 		    WinningStrategy winningStrategy,
 		    ActionStrategy actionStrategy,
 		    CityLayoutStrategy cityLayoutStrategy,
-		    WorldLayoutStrategy worldLayoutStrategy) {
+		    WorldLayoutStrategy worldLayoutStrategy,
+		    FightingStrategy fightingStrategy) {
 	this.agingStrategy = agingStrategy;
 	this.winningStrategy = winningStrategy;
         this.actionStrategy = actionStrategy;
+	this.fightingStrategy = fightingStrategy;
 	inTurn = Player.RED;
 	year = -4000;
 
@@ -107,14 +110,31 @@ public class GameImpl implements Game {
 	if (u.getLastMoved() == year)
 	    return false;
 
-	units.remove(from);
-	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
-	units.put(to, newUnit);
-        if (getCityAt(to) != null) {
-            City conquered = getCityAt(to);
-            cities.put(to, new CityImpl(u.getOwner(), conquered.getProduction(),
-                                        conquered.getProductionAmount()));
-        }
+	if (units.get(to) != null) {
+	    if (fightingStrategy.attackerWins(this, from, to)) {
+		units.remove(from);
+		Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
+		units.put(to, newUnit);
+		if (getCityAt(to) != null) {
+		    City conquered = getCityAt(to);
+		    cities.put(to, new CityImpl(u.getOwner(), 
+						conquered.getProduction(),
+						conquered.getProductionAmount()));
+		}
+	    }
+	}
+        else {
+	    units.remove(from);
+	    Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
+	    units.put(to, newUnit);
+	    if (getCityAt(to) != null) {
+		City conquered = getCityAt(to);
+		cities.put(to, new CityImpl(u.getOwner(), conquered.getProduction(),
+					    conquered.getProductionAmount()));
+	    }
+	}
+
+	
 	return true;
     }
 

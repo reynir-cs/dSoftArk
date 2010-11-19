@@ -50,7 +50,8 @@ public class TestAlphaCiv {
 			    new SimpleWinningStrategy(),
 			    new VoidActionStrategy(),
 			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy());
+			    new SimpleWorldLayoutStrategy(),
+			    new SimpleFightingStrategy());
 	archer = new UnitInfo(2, 0, Player.RED, GameConstants.ARCHER);
 	legion = new UnitInfo(3, 2, Player.BLUE, GameConstants.LEGION);
 	settler = new UnitInfo(4, 3, Player.RED, GameConstants.SETTLER);
@@ -311,7 +312,8 @@ public class TestAlphaCiv {
 	endRound();
 	endRound();
 
-	UnitInfo u = new UnitInfo(blueCityPosition.getRow(), blueCityPosition.getColumn(),
+	UnitInfo u = new UnitInfo(blueCityPosition.getRow(),
+				  blueCityPosition.getColumn(),
 				  Player.BLUE, GameConstants.ARCHER);
 	checkUnitAtPosition(u);
     }
