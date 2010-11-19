@@ -100,41 +100,38 @@ public class GameImpl implements Game {
 	Player p = u.getOwner();
 	boolean isOwner = (p == inTurn);
 
-        return legalTileType && legalDistance && isOwner && !isFortified;
+	boolean hasMoved = u.getLastMoved() == year;
+
+        return legalTileType && legalDistance && isOwner && !isFortified 
+	    && !hasMoved;
+    }
+
+    private void executeUnitMove(Position from, Position to) {
+	Unit u = units.get(from);
+	units.remove(from);
+	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
+	units.put(to, newUnit);
+	if (getCityAt(to) != null) {
+	    City conquered = getCityAt(to);
+	    cities.put(to, new CityImpl(u.getOwner(), 
+					conquered.getProduction(),
+					conquered.getProductionAmount()));
+	}
     }
 
     public boolean moveUnit(Position from, Position to) {
 	if (!isValidMove(from, to))
 	    return false;
-	Unit u = units.get(from);
-	if (u.getLastMoved() == year)
-	    return false;
 
 	if (units.get(to) != null) {
 	    if (fightingStrategy.attackerWins(this, from, to)) {
-		units.remove(from);
-		Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
-		units.put(to, newUnit);
-		if (getCityAt(to) != null) {
-		    City conquered = getCityAt(to);
-		    cities.put(to, new CityImpl(u.getOwner(), 
-						conquered.getProduction(),
-						conquered.getProductionAmount()));
-		}
+		executeUnitMove(from, to);
 	    }
 	}
         else {
-	    units.remove(from);
-	    Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
-	    units.put(to, newUnit);
-	    if (getCityAt(to) != null) {
-		City conquered = getCityAt(to);
-		cities.put(to, new CityImpl(u.getOwner(), conquered.getProduction(),
-					    conquered.getProductionAmount()));
-	    }
+	    executeUnitMove(from, to);
 	}
 
-	
 	return true;
     }
 
