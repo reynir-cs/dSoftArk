@@ -3,11 +3,11 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 public class UnitImpl implements Unit {
-    private static String type;
-    private static Player owner;
-    private static int lastMoved;
-    private static int defStr;
-    private static boolean isFortified;
+    private final String type;
+    private final Player owner;
+    private final int lastMoved;
+    private final int defStr;
+    private final boolean isFortified;
 
     public UnitImpl(String type, Player owner, int lastMoved) {
         this(type, owner, lastMoved, false);
