@@ -1,6 +1,7 @@
-package hotciv.standard;
+package hotciv.variants;
 
 import hotciv.framework.*;
+import hotciv.common.*;
 import java.util.Collection;
 
 public class ConquerAllWinningStrategy implements WinningStrategy {

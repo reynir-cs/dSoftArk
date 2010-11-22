@@ -1,4 +1,4 @@
-package hotciv.standard;
+package hotciv.common;
 
 import hotciv.framework.*;
 import java.util.HashMap;

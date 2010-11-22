@@ -1,6 +1,7 @@
-package hotciv.standard;
+package hotciv.variants;
 
 import hotciv.framework.*;
+import hotciv.common.*;
 
 public class SimpleFightingStrategy implements FightingStrategy {
     /** return whether the attacking unit wins or not, i.e. loses.

@@ -1,6 +1,7 @@
-package hotciv.standard;
+package hotciv.variants;
 
 import hotciv.framework.*;
+import hotciv.common.*;
 
 public class AdvancedFightingStrategy implements FightingStrategy {
     DieRollStrategy dieRollStrategy;
