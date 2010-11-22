@@ -14,3 +14,6 @@ documents/
 
 # ctags file
 tags
+
+# astyle backup files
+*.orig
