@@ -58,15 +58,17 @@ public class TestEpsilonCiv {
 	// Kill archer
 	game.moveUnit(intermediatePos, archerPos);
 	
-	// Wait one round
-	endRound();
+        // Move red archer away from city so he's easy to kill
+	game.endOfTurn();
+        game.moveUnit(cityPos, new Position(2, 1));
+        game.endOfTurn();
 
 	// At this point there should be no winner
 	assertNull("No one should have won yet",
 		   game.getWinner());
 
 	// Kill new archer
-	game.moveUnit(archerPos, cityPos);
+	game.moveUnit(archerPos, new Position(2, 1));
 
 	// Now Blue should have won
 	assertEquals("Blue should have won by now",
@@ -93,6 +95,8 @@ public class TestEpsilonCiv {
 
             game.moveUnit(settlerPos, legionPos);
 
+            assertNull("Red settler should have died",
+                       game.getUnitAt(settlerPos));
             assertEquals("Red settler should have died after attacking blue legion",
                     GameConstants.LEGION, game.getUnitAt(legionPos).getTypeString());
         }

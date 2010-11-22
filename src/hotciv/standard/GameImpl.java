@@ -126,7 +126,9 @@ public class GameImpl implements Game {
 	if (units.get(to) != null) {
 	    if (fightingStrategy.attackerWins(this, from, to)) {
 		executeUnitMove(from, to);
-	    }
+	    } else {
+                units.remove(from);
+            }
 	}
         else {
 	    executeUnitMove(from, to);
