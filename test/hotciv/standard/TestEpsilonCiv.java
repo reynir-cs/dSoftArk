@@ -10,8 +10,9 @@ public class TestEpsilonCiv {
 
     @Before
         public void setUp() {
-	ThreeKillWinStrategy killWinStrategy = 
-	    new ThreeKillWinStrategy(new SimpleFightingStrategy());
+        FightingStrategy fs = new AdvancedFightingStrategy(
+                new FixedDieRollStrategy());
+	ThreeKillWinStrategy killWinStrategy = new ThreeKillWinStrategy(fs);
 	game = new GameImpl(new LinearAgingStrategy(),
 			    killWinStrategy,
 			    new VoidActionStrategy(),
@@ -71,4 +72,28 @@ public class TestEpsilonCiv {
 	assertEquals("Blue should have won by now",
 		     Player.BLUE, game.getWinner());
     }
+
+    @Test
+        public void blueLegionAttacksAndDestroysRedSettler() {
+            Position legionPos = new Position(3, 2);
+            Position settlerPos = new Position(4, 3);
+
+            game.endOfTurn(); // Blue's turn
+
+            game.moveUnit(legionPos, settlerPos);
+
+            assertEquals("Blue legion should have defeated red settler",
+                    GameConstants.LEGION, game.getUnitAt(settlerPos).getTypeString());
+        }
+
+    @Test
+        public void redSettlerAttacksBlueLegionAndDies() {
+            Position legionPos = new Position(3, 2);
+            Position settlerPos = new Position(4, 3);
+
+            game.moveUnit(settlerPos, legionPos);
+
+            assertEquals("Red settler should have died after attacking blue legion",
+                    GameConstants.LEGION, game.getUnitAt(legionPos).getTypeString());
+        }
 }

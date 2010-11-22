@@ -11,10 +11,10 @@ public class SettlerAndArcherActionStrategy implements ActionStrategy {
 	}
         if (u.isFortified()) {
             return new UnitImpl(u.getTypeString(), u.getOwner(), u.getLastMoved(),
-                    false, 3);
+                    false);
         } else {
             return new UnitImpl(u.getTypeString(), u.getOwner(), u.getLastMoved(),
-                    true, 6);
+                    true, 6, u.getAttackingStrength());
         }
     }
 }
