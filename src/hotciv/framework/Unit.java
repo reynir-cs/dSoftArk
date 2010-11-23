@@ -60,4 +60,12 @@ public interface Unit {
 
     /** return wether the unit is fortified */
     public boolean isFortified();
+
+    /** return a new Unit with lastMoved set to moved */
+    public Unit withLastMoved(int moved);
+
+    /** return a new Unit with isFortified set to fortify and defensive
+     * strength defStr
+     */
+    public Unit withFortify(boolean fortify, int defStr);
 }

@@ -11,11 +11,9 @@ public class SettlerAndArcherActionStrategy implements ActionStrategy {
 	    return null;
 	}
         if (u.isFortified()) {
-            return new UnitImpl(u.getTypeString(), u.getOwner(), u.getLastMoved(),
-                    false);
+            return u.withFortify(false, u.getDefensiveStrength()/2);
         } else {
-            return new UnitImpl(u.getTypeString(), u.getOwner(), u.getLastMoved(),
-                    true, 6, u.getAttackingStrength());
+            return u.withFortify(true, u.getDefensiveStrength()*2);
         }
     }
 }

@@ -3,31 +3,12 @@ package hotciv.common;
 import hotciv.framework.*;
 
 public class UnitImpl implements Unit {
-    private String type;
-    private Player owner;
-    private int lastMoved;
-    private int defStr;
-    private int atkStr;
-    private boolean isFortified;
-
-    public UnitImpl(String type, Player owner, int lastMoved) {
-        this(type, owner, lastMoved, false);
-    }
-
-    public UnitImpl(String type, Player owner, int lastMoved, 
-            boolean isFortified) {
-        this(type, owner, lastMoved, isFortified, 0, 0);
-
-        if (type.equals(GameConstants.ARCHER)) {
-            defStr = 3;
-            atkStr = 2;
-        } else if (type.equals(GameConstants.LEGION)) {
-            defStr = 2;
-            atkStr = 4;
-        } else if (type.equals(GameConstants.SETTLER)) {
-            defStr = 3;
-        }
-    }
+    private final String type;
+    private final Player owner;
+    private final int lastMoved;
+    private final int defStr;
+    private final int atkStr;
+    private final boolean isFortified;
 
     public UnitImpl(String type, Player owner, int lastMoved, 
             boolean isFortified, int defStr, int atkStr) {
@@ -37,6 +18,26 @@ public class UnitImpl implements Unit {
         this.isFortified = isFortified;
         this.defStr = defStr;
         this.atkStr = atkStr;
+    }
+
+    public static UnitImpl create(String type, Player owner, int lastMoved) {
+        int defStr, atkStr;
+
+        if (type.equals(GameConstants.ARCHER)) {
+            defStr = 3;
+            atkStr = 2;
+        } else if (type.equals(GameConstants.LEGION)) {
+            defStr = 2;
+            atkStr = 4;
+        } else if (type.equals(GameConstants.SETTLER)) {
+            defStr = 3;
+            atkStr = 0;
+        } else {
+            defStr = 0;
+            atkStr = 0;
+        }
+
+        return new UnitImpl(type, owner, lastMoved, false, defStr, atkStr);
     }
 
     public String getTypeString() {
@@ -61,5 +62,13 @@ public class UnitImpl implements Unit {
 
     public boolean isFortified() {
         return isFortified;
+    }
+
+    public Unit withLastMoved(int moved) {
+        return new UnitImpl(type, owner, moved, isFortified, defStr, atkStr);
+    }
+
+    public Unit withFortify(boolean fortify, int defStr) {
+        return new UnitImpl(type, owner, lastMoved, fortify, defStr, atkStr);
     }
 }

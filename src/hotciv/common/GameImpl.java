@@ -46,12 +46,12 @@ public class GameImpl implements Game {
 	round = 0;
 
 	units = new HashMap<Position, Unit>();
-        units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER,
-                    Player.RED, round - 1));
-        units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER,
-                    Player.RED, round - 1));
-        units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
-                    Player.BLUE, round - 1));
+        units.put(new Position(2,0), UnitImpl.create(GameConstants.ARCHER,
+                                Player.RED, round - 1));
+        units.put(new Position(4,3), UnitImpl.create(GameConstants.SETTLER,
+                                Player.RED, round - 1));
+        units.put(new Position(3,2), UnitImpl.create(GameConstants.LEGION,
+                                Player.BLUE, round - 1));
 
 	cities = strategyFactory.getCityLayoutStrategy().getCities();
 	world = strategyFactory.getWorldLayoutStrategy().getWorld();
@@ -111,7 +111,7 @@ public class GameImpl implements Game {
     private void executeUnitMove(Position from, Position to) {
 	Unit u = units.get(from);
 	units.remove(from);
-	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), round);
+	Unit newUnit = u.withLastMoved(round);
 	units.put(to, newUnit);
 	if (getCityAt(to) != null) {
 	    City conquered = getCityAt(to);
@@ -184,7 +184,8 @@ public class GameImpl implements Game {
 	    if (c.getProductionAmount() >= cost) {
 		Position free = getNextFreeUnitPosition(p);
 		if (free != null) {
-		    units.put(free, new UnitImpl(type, c.getOwner(), round - 1));
+                    units.put(free, UnitImpl.create(type, c.getOwner(),
+                                            round - 1));
 		    cities.put(p, new CityImpl(c.getOwner(), type,
 					       c.getProductionAmount() - cost));
 		}
