@@ -12,13 +12,7 @@ public class TestBetaCiv {
 
     @Before
 	public void setUp() {
-	game = new GameImpl(new GameEventController(),
-                            new SlowingAgingStrategy(),
-			    new ConquerAllWinningStrategy(),
-			    new VoidActionStrategy(),
-			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy(),
-			    new SimpleFightingStrategy());
+	game = new GameImpl(new BetaCivFactory());
     }
     
     private void endRound() {

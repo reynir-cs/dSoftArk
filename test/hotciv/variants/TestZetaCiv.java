@@ -11,16 +11,7 @@ public class TestZetaCiv {
 
     @Before
         public void setUp() {
-        GameEventController eventController = new GameEventController();
-        WinningStrategy winningStrategy = 
-            ChangingWinningStrategy.create(eventController);
-	game = new GameImpl(eventController,
-                            new LinearAgingStrategy(),
-			    winningStrategy,
-			    new VoidActionStrategy(),
-			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy(),
-			    new SimpleFightingStrategy());
+	game = new GameImpl(new ZetaCivFactory());
     }
 
     private void endRound() {

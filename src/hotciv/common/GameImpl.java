@@ -35,19 +35,13 @@ public class GameImpl implements Game {
     private FightingStrategy fightingStrategy;
     private GameEventController eventController;
 
-    public GameImpl(GameEventController eventController,
-                    AgingStrategy agingStrategy,
-		    WinningStrategy winningStrategy,
-		    ActionStrategy actionStrategy,
-		    CityLayoutStrategy cityLayoutStrategy,
-		    WorldLayoutStrategy worldLayoutStrategy,
-		    FightingStrategy fightingStrategy) {
-        this.eventController = eventController;
+    public GameImpl(StrategyFactory strategyFactory) {
+        this.eventController = strategyFactory.getEventController();
 
-	this.agingStrategy = agingStrategy;
-	this.winningStrategy = winningStrategy;
-        this.actionStrategy = actionStrategy;
-	this.fightingStrategy = fightingStrategy;
+	this.agingStrategy = strategyFactory.getAgingStrategy();
+	this.winningStrategy = strategyFactory.getWinningStrategy();
+        this.actionStrategy = strategyFactory.getActionStrategy();
+	this.fightingStrategy = strategyFactory.getFightingStrategy();
 	inTurn = Player.RED;
 	round = 0;
 
@@ -59,8 +53,8 @@ public class GameImpl implements Game {
         units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
                     Player.BLUE, round - 1));
 
-	cities = cityLayoutStrategy.getCities();
-	world = worldLayoutStrategy.getWorld();
+	cities = strategyFactory.getCityLayoutStrategy().getCities();
+	world = strategyFactory.getWorldLayoutStrategy().getWorld();
     }
 
     public GameEventController getEventController() {

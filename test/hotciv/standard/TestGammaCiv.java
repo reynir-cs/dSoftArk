@@ -12,13 +12,7 @@ public class TestGammaCiv {
 
     @Before
         public void setUp() {
-	game = new GameImpl(new GameEventController(),
-                            new LinearAgingStrategy(),
-			    new SimpleWinningStrategy(),
-			    new SettlerAndArcherActionStrategy(),
-			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy(),
-			    new SimpleFightingStrategy());
+	game = new GameImpl(new GammaCivFactory());
         }
 
     @Test

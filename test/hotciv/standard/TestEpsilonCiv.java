@@ -12,18 +12,7 @@ public class TestEpsilonCiv {
 
     @Before
         public void setUp() {
-        GameEventController eventController = new GameEventController();
-	ThreeKillWinStrategy killWinStrategy = 
-            ThreeKillWinStrategy.create(eventController);
-        FightingStrategy fs = new AdvancedFightingStrategy(
-                new FixedDieRollStrategy());
-	game = new GameImpl(eventController,
-                            new LinearAgingStrategy(),
-			    killWinStrategy,
-			    new VoidActionStrategy(),
-			    new SimpleCityLayoutStrategy(),
-			    new SimpleWorldLayoutStrategy(),
-			    fs);
+	game = new GameImpl(new EpsilonCivFactory(new FixedDieRollStrategy()));
     }
 
     private void endRound() {

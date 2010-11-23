@@ -12,33 +12,8 @@ public class TestDeltaCiv {
 
     @Before
         public void setUp() {
-            String[] layout = new String[] {
-                "...ooMooooo.....",
-                    "..ohhoooofffoo..",
-                    ".oooooMooo...oo.",
-                    ".ooMMMoooo..oooo",
-                    "...ofooohhoooo..",
-                    ".ofoofooooohhoo.",
-                    "...ooo..........",
-                    ".ooooo.ooohooM..",
-                    ".ooooo.oohooof..",
-                    "offfoooo.offoooo",
-                    "oooooooo...ooooo",
-                    ".ooMMMoooo......",
-                    "..ooooooffoooo..",
-                    "....ooooooooo...",
-                    "..ooohhoo.......",
-                    ".....ooooooooo.."
-            };
-
-            game = new GameImpl(new GameEventController(),
-                                new LinearAgingStrategy(),
-				new SimpleWinningStrategy(),
-				new VoidActionStrategy(),
-				new DoooooItHippieCityMonster(),
-				new DynamicWorldLayoutStrategy(layout),
-				new SimpleFightingStrategy());
-        }
+        game = new GameImpl(new DeltaCivFactory());
+    }
 
     @Test
         public void redHasCityAt8_12() {
