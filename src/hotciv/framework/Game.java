@@ -133,4 +133,9 @@ public interface Game {
      * @param p the position where the new city should be added
      */
     public void addCityAt( Position p, City c );
+
+    /** get the event controller for this game object
+     * @return the event controller for this game object
+     */
+    public GameEventController getEventController();
 }

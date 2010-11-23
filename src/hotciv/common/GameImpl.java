@@ -25,7 +25,7 @@ commercial use, see http://www.baerbak.com/
 
 public class GameImpl implements Game {
     private Player inTurn;
-    private int year;
+    private int round;
     private Map<Position, Unit> units;
     private Map<Position, City> cities;
     private Map<Position, Tile> world;
@@ -33,30 +33,38 @@ public class GameImpl implements Game {
     private WinningStrategy winningStrategy;
     private ActionStrategy actionStrategy;
     private FightingStrategy fightingStrategy;
+    private GameEventController eventController;
 
-    public GameImpl(AgingStrategy agingStrategy,
+    public GameImpl(GameEventController eventController,
+                    AgingStrategy agingStrategy,
 		    WinningStrategy winningStrategy,
 		    ActionStrategy actionStrategy,
 		    CityLayoutStrategy cityLayoutStrategy,
 		    WorldLayoutStrategy worldLayoutStrategy,
 		    FightingStrategy fightingStrategy) {
+        this.eventController = eventController;
+
 	this.agingStrategy = agingStrategy;
 	this.winningStrategy = winningStrategy;
         this.actionStrategy = actionStrategy;
 	this.fightingStrategy = fightingStrategy;
 	inTurn = Player.RED;
-	year = -4000;
+	round = 0;
 
 	units = new HashMap<Position, Unit>();
         units.put(new Position(2,0), new UnitImpl(GameConstants.ARCHER,
-                    Player.RED, year - 1));
+                    Player.RED, round - 1));
         units.put(new Position(4,3), new UnitImpl(GameConstants.SETTLER,
-                    Player.RED, year - 1));
+                    Player.RED, round - 1));
         units.put(new Position(3,2), new UnitImpl(GameConstants.LEGION,
-                    Player.BLUE, year - 1));
+                    Player.BLUE, round - 1));
 
 	cities = cityLayoutStrategy.getCities();
 	world = worldLayoutStrategy.getWorld();
+    }
+
+    public GameEventController getEventController() {
+        return eventController;
     }
 
     public Tile getTileAt( Position p ) {
@@ -80,7 +88,7 @@ public class GameImpl implements Game {
     }
     
     public int getAge() {
-	return year;
+	return agingStrategy.getYear(round);
     }
 
     private boolean unitCanMoveOnTile(Tile t) {
@@ -100,7 +108,7 @@ public class GameImpl implements Game {
 	Player p = u.getOwner();
 	boolean isOwner = (p == inTurn);
 
-	boolean hasMoved = u.getLastMoved() == year;
+	boolean hasMoved = u.getLastMoved() == round;
 
         return legalTileType && legalDistance && isOwner && !isFortified 
 	    && !hasMoved;
@@ -109,7 +117,7 @@ public class GameImpl implements Game {
     private void executeUnitMove(Position from, Position to) {
 	Unit u = units.get(from);
 	units.remove(from);
-	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), year);
+	Unit newUnit = new UnitImpl(u.getTypeString(), u.getOwner(), round);
 	units.put(to, newUnit);
 	if (getCityAt(to) != null) {
 	    City conquered = getCityAt(to);
@@ -125,7 +133,11 @@ public class GameImpl implements Game {
 
 	if (units.get(to) != null) {
 	    if (fightingStrategy.attackerWins(this, from, to)) {
+//                 System.out.printf("In round %d, %s killed %s's unit at %s\n",
+//                                   round, units.get(from).getOwner(),
+//                                   units.get(to).getOwner(), to);
 		executeUnitMove(from, to);
+                eventController.dispatch("ATTACKER_WON", units.get(to).getOwner());
 	    } else {
                 units.remove(from);
             }
@@ -147,9 +159,10 @@ public class GameImpl implements Game {
     }
 
     private void endOfRound() {
-	year = agingStrategy.getYear(year);
+	round++;
 	incrementProductionAmount();
 	produceUnits();
+        eventController.dispatch("NEW_ROUND", new Integer(round));
     }
 
     private void incrementProductionAmount() {
@@ -177,7 +190,7 @@ public class GameImpl implements Game {
 	    if (c.getProductionAmount() >= cost) {
 		Position free = getNextFreeUnitPosition(p);
 		if (free != null) {
-		    units.put(free, new UnitImpl(type, c.getOwner(), year - 1));
+		    units.put(free, new UnitImpl(type, c.getOwner(), round - 1));
 		    cities.put(p, new CityImpl(c.getOwner(), type,
 					       c.getProductionAmount() - cost));
 		}

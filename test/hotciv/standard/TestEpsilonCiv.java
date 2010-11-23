@@ -1,6 +1,8 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
+import hotciv.common.*;
+import hotciv.variants.*;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -10,15 +12,18 @@ public class TestEpsilonCiv {
 
     @Before
         public void setUp() {
+        GameEventController eventController = new GameEventController();
+	ThreeKillWinStrategy killWinStrategy = 
+            ThreeKillWinStrategy.create(eventController);
         FightingStrategy fs = new AdvancedFightingStrategy(
                 new FixedDieRollStrategy());
-	ThreeKillWinStrategy killWinStrategy = new ThreeKillWinStrategy(fs);
-	game = new GameImpl(new LinearAgingStrategy(),
+	game = new GameImpl(eventController,
+                            new LinearAgingStrategy(),
 			    killWinStrategy,
 			    new VoidActionStrategy(),
 			    new SimpleCityLayoutStrategy(),
 			    new SimpleWorldLayoutStrategy(),
-			    killWinStrategy);
+			    fs);
     }
 
     private void endRound() {

@@ -109,6 +109,7 @@ HotCiv build management.
       <arg value="hotciv.standard.TestGammaCiv"/>
       <arg value="hotciv.standard.TestDeltaCiv"/>
       <arg value="hotciv.standard.TestEpsilonCiv"/>
+      <arg value="hotciv.variants.TestZetaCiv"/>
       <classpath refid="class-path"/>
     </java>
   </target>

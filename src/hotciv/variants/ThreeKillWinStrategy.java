@@ -3,14 +3,13 @@ package hotciv.variants;
 import hotciv.framework.*;
 import hotciv.common.*;
 
-public class ThreeKillWinStrategy implements WinningStrategy, FightingStrategy {
+public class ThreeKillWinStrategy implements WinningStrategy, GameEventListener {
     private int redKills, blueKills;
     FightingStrategy fightingStrategy;
     
-    public ThreeKillWinStrategy(FightingStrategy fightingStrategy) {
+    public ThreeKillWinStrategy() {
 	redKills = 0;
 	blueKills = 0;
-	this.fightingStrategy = fightingStrategy;
     }
 
     public Player getWinner(Game game) {
@@ -21,19 +20,21 @@ public class ThreeKillWinStrategy implements WinningStrategy, FightingStrategy {
 	return null;
     }
 
-    public boolean attackerWins(Game game, Position attackerPosition, 
-				Position defenderPosition) {
-	Unit u = game.getUnitAt(attackerPosition);
-	boolean result = fightingStrategy.attackerWins(game,attackerPosition,
-						       defenderPosition);
+    public void dispatch(Object o) {
+        Player p = (Player) o;
+        if (p == Player.RED)
+            redKills++;
+        else
+            blueKills++;
+    }
 
-	if (result) {
-	    if (u.getOwner() == Player.RED)
-		redKills++;
-	    else
-		blueKills++;
-	}
+    public String getType() {
+        return "ATTACKER_WON";
+    }
 
-	return result;
+    public static ThreeKillWinStrategy create(GameEventController eventController) {
+        ThreeKillWinStrategy thunk = new ThreeKillWinStrategy();
+        eventController.subscribe(thunk);
+        return thunk;
     }
 }

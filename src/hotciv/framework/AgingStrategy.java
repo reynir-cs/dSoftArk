@@ -1,9 +1,10 @@
 package hotciv.framework;
 
 public interface AgingStrategy {
-    /** return the year of the next round, given the year in the current round.
-     * @param currentYear the year of the current round
-     * @return year of the next round
+    /** return a year given a round number.
+     * @precondition round >= 0
+     * @param round the round for which to calculate the year
+     * @return year the year of the corresponding round
      */
-    public int getYear(int currentYear);
+    public int getYear(int round);
 }

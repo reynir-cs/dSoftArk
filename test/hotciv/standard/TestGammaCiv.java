@@ -1,6 +1,8 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
+import hotciv.common.*;
+import hotciv.variants.*;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -10,7 +12,8 @@ public class TestGammaCiv {
 
     @Before
         public void setUp() {
-	game = new GameImpl(new LinearAgingStrategy(),
+	game = new GameImpl(new GameEventController(),
+                            new LinearAgingStrategy(),
 			    new SimpleWinningStrategy(),
 			    new SettlerAndArcherActionStrategy(),
 			    new SimpleCityLayoutStrategy(),

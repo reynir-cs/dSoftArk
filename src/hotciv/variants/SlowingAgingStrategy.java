@@ -4,23 +4,19 @@ import hotciv.framework.*;
 import hotciv.common.*;
 
 public class SlowingAgingStrategy implements AgingStrategy {
-    public int getYear(int currentYear) {
-	if (currentYear < -100) {
-	    return currentYear + 100;
-	} else if (currentYear == -100) {
-	    return -1;
-	} else if (currentYear == -1) {
-	    return 1;
-	} else if (currentYear == 1) {
-	    return 50;
-	} else if (currentYear < 1750) {
-	    return currentYear + 50;
-	} else if (currentYear < 1900) {
-	    return currentYear + 25;
-	} else if (currentYear < 1970) {
-	    return currentYear + 5;
-	} else {
-	    return currentYear + 1;
-	}
+    public int getYear(int round) {
+        if (round < 40)
+            return round * 100 - 4000;
+        if (round == 40)
+            return -1;
+        if (round == 41)
+            return 1;
+        if (round < 76)
+            return (round - 41) * 50;
+        if (round < 82)
+            return (round - 76) * 25 + 1750;
+        if (round < 96)
+            return (round - 82) * 5 + 1900;
+        return (round - 96) + 1970;
     }
 }

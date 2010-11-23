@@ -53,8 +53,8 @@ public interface Unit {
      */
     public int getAttackingStrength();
 
-    /** return the year of the last time the unit was moved
-     * @return year of units last movement
+    /** return the round in which the unit was last moved
+     * @return round the last round in which the unit was moved
      */
     public int getLastMoved();
 
