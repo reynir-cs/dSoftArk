@@ -5,7 +5,6 @@ import hotciv.common.*;
 
 public class ThreeKillWinStrategy implements WinningStrategy, GameEventListener {
     private int redKills, blueKills;
-    FightingStrategy fightingStrategy;
     
     public ThreeKillWinStrategy() {
 	redKills = 0;
