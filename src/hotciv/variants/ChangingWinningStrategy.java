@@ -7,7 +7,7 @@ public class ChangingWinningStrategy implements WinningStrategy, GameEventListen
     private GameEventController eventController;
     private WinningStrategy currWin;
     private int round;
-    
+
     public ChangingWinningStrategy(GameEventController eventController) {
         this.eventController = eventController;
         this.currWin = new ConquerAllWinningStrategy();
@@ -18,14 +18,14 @@ public class ChangingWinningStrategy implements WinningStrategy, GameEventListen
 	return currWin.getWinner(game);
     }
 
-    public void dispatch(Object o) {
+    public void dispatch(GameEvent evt) {
         round++;
         if (round == 20)
             currWin = ThreeKillWinStrategy.create(eventController);
     }
 
-    public String getType() {
-        return "NEW_ROUND";
+    public GameEventController.EventType getType() {
+        return GameEventController.EventType.NEW_ROUND;
     }
 
     public static ChangingWinningStrategy create(GameEventController eventController) {

@@ -1,30 +1,31 @@
 package hotciv.framework;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
 public class GameEventController {
-    private Map<String, Set<GameEventListener>> eventMap;
-    
+    private Map<EventType, Set<GameEventListener>> eventMap;
+    public enum EventType { NEW_ROUND, ATTACKER_WON };
+
     public GameEventController() {
-        eventMap = new HashMap<String, Set<GameEventListener>>();
+        eventMap = new EnumMap<EventType, Set<GameEventListener>>(EventType.class);
     }
 
     public void subscribe(GameEventListener event) {
-        String eventType = event.getType();
-        Set<GameEventListener> events = eventMap.get(eventType);
+        EventType type = event.getType();
+        Set<GameEventListener> events = eventMap.get(type);
         if (events == null) {
             events = new HashSet<GameEventListener>();
-            eventMap.put(eventType, events);
+            eventMap.put(type, events);
         }
         events.add(event);
     }
 
     public void unsubscribe(GameEventListener event) {
-        String eventType = event.getType();
-        Set<GameEventListener> events = eventMap.get(eventType);
+        EventType type = event.getType();
+        Set<GameEventListener> events = eventMap.get(type);
         if (events == null)
             return;
         events.remove(event);
@@ -32,11 +33,11 @@ public class GameEventController {
             eventMap.remove(events);
     }
 
-    public void dispatch(String eventType, Object o) {
-        Set<GameEventListener> events = eventMap.get(eventType);
+    public void dispatch(EventType type, GameEvent evt) {
+        Set<GameEventListener> events = eventMap.get(type);
         if (events == null)
             return;
         for (GameEventListener event : events)
-            event.dispatch(o);
+            event.dispatch(evt);
     }
 }

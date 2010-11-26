@@ -20,16 +20,16 @@ public class ThreeKillWinStrategy implements WinningStrategy, GameEventListener 
 	return null;
     }
 
-    public void dispatch(Object o) {
-        Player p = (Player) o;
+    public void dispatch(GameEvent evt) {
+        Player p = (Player) evt;
         if (p == Player.RED)
             redKills++;
         else
             blueKills++;
     }
 
-    public String getType() {
-        return "ATTACKER_WON";
+    public GameEventController.EventType getType() {
+        return GameEventController.EventType.ATTACKER_WON;
     }
 
     public static ThreeKillWinStrategy create(GameEventController eventController) {
