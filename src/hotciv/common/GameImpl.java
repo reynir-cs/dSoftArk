@@ -131,7 +131,8 @@ public class GameImpl implements Game {
 //                                   round, units.get(from).getOwner(),
 //                                   units.get(to).getOwner(), to);
 		executeUnitMove(from, to);
-                eventController.dispatch(GameEventController.EventType.ATTACKER_WON, units.get(to).getOwner());
+                eventController.dispatch(GameEventController.EventType.ATTACKER_WON,
+                        new AttackerWonEvent(units.get(to).getOwner()));
 	    } else {
                 units.remove(from);
             }
@@ -156,7 +157,8 @@ public class GameImpl implements Game {
 	round++;
 	incrementProductionAmount();
 	produceUnits();
-        eventController.dispatch(GameEventController.EventType.NEW_ROUND, new Integer(round));
+        eventController.dispatch(GameEventController.EventType.NEW_ROUND,
+                new NewRoundEvent(round));
     }
 
     private void incrementProductionAmount() {

@@ -20,8 +20,10 @@ public class ChangingWinningStrategy implements WinningStrategy, GameEventListen
 
     public void dispatch(GameEvent evt) {
         round++;
-        if (round == 20)
+        if (round == 20) {
             currWin = ThreeKillWinStrategy.create(eventController);
+            eventController.unsubscribe(this);
+        }
     }
 
     public GameEventController.EventType getType() {

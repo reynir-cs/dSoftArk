@@ -21,8 +21,8 @@ public class ThreeKillWinStrategy implements WinningStrategy, GameEventListener 
     }
 
     public void dispatch(GameEvent evt) {
-        Player p = (Player) evt;
-        if (p == Player.RED)
+        AttackerWonEvent e = (AttackerWonEvent) evt;
+        if (e.attacker == Player.RED)
             redKills++;
         else
             blueKills++;
