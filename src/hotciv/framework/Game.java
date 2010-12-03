@@ -65,15 +65,21 @@ public interface Game {
     
     // === Mutator methods ======================================
   
-    /** move a unit from one position to another. If that other position
-     * is occupied by an opponent unit, a battle is conducted leading to
-     * either victory or defeat. If victorious then the opponent unit is
-     * removed from the game and the move conducted. If defeated then
-     * the attacking unit is removed from the game. If a successful move
-     * results in the unit entering the position of a city then this
-     * city becomes owned by the owner of the moving unit.
-     * Precondition: both from and to are within the limits of the
-     * world.  Precondition: there is a unit located at position from.
+    /** 
+     * Move a unit from one position to another. If that other
+     * position is occupied by an opponent unit, a battle is conducted
+     * leading to either victory or defeat. If victorious then the
+     * opponent unit is removed from the game and the move
+     * conducted. If defeated then the attacking unit is removed from
+     * the game. If a successful move results in the unit entering the
+     * position of a city then this city becomes owned by the owner of
+     * the moving unit. If the other position is occupied by a
+     * friendly unit or contains mountains or water, the move is not
+     * allowed. If the other position is not ajacent to the 'from'
+     * position, the move is not allowed.
+     * @precondition both from and to are within the limits of the
+     * world
+     * @precondition there is a unit located at position from
      * @param from the position that the unit has now
      * @param to the position the unit should move to
      * @return true if the move is valid (no mountain, move is valid
