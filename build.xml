@@ -114,4 +114,11 @@ HotCiv build management.
     </java>
   </target>
 
+  <target name="test-logging"  depends="build-all">
+    <java classname="org.junit.runner.JUnitCore">
+      <arg value="hotciv.standard.TestLogging"/>
+      <classpath refid="class-path"/>
+    </java>
+  </target>
+
 </project>
