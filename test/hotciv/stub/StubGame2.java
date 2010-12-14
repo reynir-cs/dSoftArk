@@ -42,6 +42,8 @@ public class StubGame2 implements Game {
     // Stub only allows moving red archer
     public boolean moveUnit( Position from, Position to ) { 
         System.out.println( "-- StubGame2 / moveUnit called: "+from+"->"+to );
+        if (to.equals(new Position(0,0)))
+            return false;
         if ( from.equals(pos_archer_red) ) {
             pos_archer_red = to;
         }

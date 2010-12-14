@@ -55,7 +55,7 @@ public class MoveTool extends NullTool {
             return;
         }
         if (!game.moveUnit(startPos, unitPos)) {
-            movingUnit.moveBy(x - startX, y - startY);
+            movingUnit.moveBy(startX - x, startY - y);
         }
         movingUnit = null;
     }
