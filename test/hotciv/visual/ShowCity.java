@@ -42,7 +42,7 @@ public class ShowCity {
         CityFigure cf = new CityFigure( city,
                                         new Point( GfxConstants.getXFromColumn(4),
                                                    GfxConstants.getYFromRow(7) ) );
-        editor.drawing().add(cf);
+        // editor.drawing().add(cf);
         editor.setTool( new ChangeCityTool(city, cf) );
 
     }
@@ -57,7 +57,7 @@ class ChangeCityTool extends NullTool {
     }
     public void mouseDown(MouseEvent e, int x, int y) {
         city.makeAChange();
-        cityFigure.changed();
+        //   cityFigure.changed();
     }
 }
 
@@ -72,7 +72,7 @@ class HotCivFactory3 implements Factory {
     }
 
     public Drawing createDrawing( DrawingEditor editor ) {
-        return new StandardDrawing();
+        return new CivDrawing(editor, game);
     }
 
     public JTextField createStatusField( DrawingEditor editor ) {

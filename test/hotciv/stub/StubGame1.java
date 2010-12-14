@@ -1,6 +1,7 @@
 package hotciv.stub;
 
 import hotciv.framework.*;
+import hotciv.common.*;
 
 import java.util.*;
 
@@ -23,7 +24,11 @@ import java.util.*;
 
 public class StubGame1 implements Game {
     public Unit getUnitAt( Position p ) { return null; }
-    public City getCityAt( Position p ) { return null; }
+    public City getCityAt( Position p ) {
+        if (p.getRow() == 7 && p.getColumn() == 8)
+            return new CityImpl(Player.RED);
+        return null;
+    }
     public Player getPlayerInTurn() { return null; }
     public Player getWinner() { return null; }
     public int getAge() { return 0; }  
