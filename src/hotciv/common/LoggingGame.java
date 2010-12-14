@@ -82,6 +82,11 @@ public class LoggingGame implements Game {
         return game.getEventController();
     }
     
-    public void addObserver(GameObserver observer){
+    public void addObserver(GameObserver observer) {
+
+    }
+
+    public void setTileFocus(Position p) {
+
     }
 }

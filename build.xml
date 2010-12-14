@@ -21,16 +21,18 @@
   <property name="test-source-directory" value="test"/>
 
   <property name="build-directory" value="build"/>
-  <property name="resourceDirectory" value="resource"/>
+  <property name="resource" value="resource"/>
   <property name="docDirectory" value="doc"></property>
   
   <property name="junitJar" value="lib/junit-4.4.jar"/>
   <property name="fractalJar" value="lib/fractal.jar"/>
+  <property name="minidrawJar" value="lib/minidraw.jar"/>
 
   <path id="class-path">
     <pathelement location="${build-directory}"/>
     <pathelement location="${junitJar}"/>
     <pathelement location="${fractalJar}"/>
+    <pathelement location="${minidrawJar}"/>
   </path>
 
   <target name="help">
@@ -78,10 +80,18 @@ HotCiv build management.
     </javac>
   </target>
   
-  <target name="build-all" depends="build-src,build-test"/>
+  <target name="build-all" depends="build-src,build-test,copy-resource"/>
 
   <target name="mkdirdoc">
     <mkdir dir="${docDirectory}"></mkdir>
+  </target>
+
+  <target name="copy-resource" depends="prepare">
+    <copy todir="${build-directory}\${resource}" >
+      <fileset dir="${resource}">
+	<include name="*.gif"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="javadoc" depends="clean,build-src,mkdirdoc">
@@ -114,6 +124,39 @@ HotCiv build management.
       <arg value="hotciv.variants.TestZetaCiv"/>
       <arg value="hotciv.common.TestObserver"/>
       <classpath refid="class-path"/>
+    </java>
+  </target>
+
+  <!-- run visual testing application -->
+  <target name="show" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.ShowWorld">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="text" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.ShowText">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="city" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.ShowCity">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="partial" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.TestPartialDrawing">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
     </java>
   </target>
 
