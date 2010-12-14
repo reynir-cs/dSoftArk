@@ -50,8 +50,8 @@ public class CivDrawing extends StandardDrawing
         game.addObserver(this);
         // ... and build up the set of figures associated with
         // units in the game.
-        defineUnitMap();
         defineCityMap();
+        defineUnitMap();
         // and the set of 'icons' in the status panel
         defineIcons();
     }
@@ -156,8 +156,8 @@ public class CivDrawing extends StandardDrawing
         for ( Figure f : cityFigureMap.values() ) {
             super.remove(f);
         }
-        defineUnitMap();
         defineCityMap();
+        defineUnitMap();
     }
 
     public void turnEnds(Player nextPlayer, int age) {
