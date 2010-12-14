@@ -176,6 +176,14 @@ HotCiv build management.
     </java>
   </target>
 
+  <target name="actiontool" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.TestActionTool">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
   <target name="test-logging"  depends="build-all">
     <java classname="org.junit.runner.JUnitCore">
       <arg value="hotciv.standard.TestLogging"/>
