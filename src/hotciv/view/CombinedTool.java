@@ -14,10 +14,10 @@ public class CombinedTool implements Tool {
 
     public CombinedTool(DrawingEditor editor, Game game) {
         tools = new ArrayList<Tool>();
-        tools.add(new MoveTool(editor, game));
         tools.add(new EndTurnTool(editor, game));
         tools.add(new ActionTool(editor, game));
         tools.add(new InspectTool(editor, game));
+        tools.add(new MoveTool(editor, game));
     }
 
     public void keyDown(KeyEvent evt, int key) {
