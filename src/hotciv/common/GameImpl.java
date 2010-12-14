@@ -34,6 +34,7 @@ public class GameImpl implements Game {
     private ActionStrategy actionStrategy;
     private FightingStrategy fightingStrategy;
     private GameEventController eventController;
+    private Position tileFocus;
 
     public GameImpl(StrategyFactory strategyFactory) {
         this.eventController = strategyFactory.getEventController();
@@ -55,6 +56,8 @@ public class GameImpl implements Game {
 
 	cities = strategyFactory.getCityLayoutStrategy().getCities();
 	world = strategyFactory.getWorldLayoutStrategy().getWorld();
+
+        tileFocus = new Position(0,0);
     }
 
     public GameEventController getEventController() {
@@ -127,18 +130,19 @@ public class GameImpl implements Game {
 
 	if (units.get(to) != null) {
 	    if (fightingStrategy.attackerWins(this, from, to)) {
-//                 System.out.printf("In round %d, %s killed %s's unit at %s\n",
-//                                   round, units.get(from).getOwner(),
-//                                   units.get(to).getOwner(), to);
 		executeUnitMove(from, to);
                 eventController.dispatch("ATTACKER_WON", units.get(to).getOwner());
+                eventController.dispatch("WORLD_CHANGED", to);
 	    } else {
                 units.remove(from);
             }
 	}
         else {
 	    executeUnitMove(from, to);
+            eventController.dispatch("WORLD_CHANGED", to);
 	}
+
+        eventController.dispatch("WORLD_CHANGED", from);
 
 	return true;
     }
@@ -150,6 +154,9 @@ public class GameImpl implements Game {
 	    inTurn = Player.RED;
 	    endOfRound();
 	}
+        
+        Object[] args = {inTurn, new Integer(getAge())};
+        eventController.dispatch("TURN_ENDS", args);
     }
 
     private void endOfRound() {
@@ -188,6 +195,7 @@ public class GameImpl implements Game {
                                             round - 1));
 		    cities.put(p, new CityImpl(c.getOwner(), type,
 					       c.getProductionAmount() - cost));
+                    eventController.dispatch("WORLD_CHANGED", free);
 		}
 	    }
 	}
@@ -228,10 +236,12 @@ public class GameImpl implements Game {
 	    return;
         cities.put(p, new CityImpl(old.getOwner(), unitType,
                     old.getProductionAmount()));
+        eventController.dispatch("WORLD_CHANGED", p);
     }
 
     public void performUnitActionAt( Position p ) {
         units.put(p, actionStrategy.performUnitActionAt(this, p));
+        eventController.dispatch("WORLD_CHANGED", p);
     }
 
     public Collection<City> getCities() {
@@ -240,5 +250,48 @@ public class GameImpl implements Game {
 
     public void addCityAt(Position p, City c) {
 	cities.put(p, c);
+        eventController.dispatch("WORLD_CHANGED", p);
+    }
+
+    public void addObserver(final GameObserver observer) {
+        // World changed
+        eventController.subscribe(new GameEventListener() {
+            public void dispatch(Object o) {
+                Position pos = (Position) o;
+                observer.worldChangedAt(pos);
+            }
+            public String getType() {
+                return "WORLD_CHANGED";
+            }
+        });
+        
+        // turnEnds
+        eventController.subscribe(new GameEventListener() {
+            public void dispatch(Object o) {
+                Object[] e = (Object[]) o;
+                Player nextPlayer = (Player) e[0];
+                int age = (Integer) e[1];
+                observer.turnEnds(nextPlayer, age);
+            }
+            public String getType() {
+                return "TURN_ENDS";
+            }
+        });
+        
+        // tileFocusChangedAt
+        eventController.subscribe(new GameEventListener() {
+            public void dispatch(Object o) {
+                Position pos = (Position) o;
+                observer.tileFocusChangedAt(pos);
+            }
+            public String getType() {
+                return "FOCUS_CHANGED";
+            }
+        });
+    }
+
+    public void setTileFocus(Position position) {
+        tileFocus = position;
+        eventController.dispatch("FOCUS_CHANGED", position);
     }
 }

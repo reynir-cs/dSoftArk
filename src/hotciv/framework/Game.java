@@ -144,4 +144,8 @@ public interface Game {
      * @return the event controller for this game object
      */
     public GameEventController getEventController();
+
+    public void addObserver(GameObserver observer);
+
+    public void setTileFocus(Position position);
 }

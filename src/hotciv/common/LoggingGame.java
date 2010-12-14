@@ -81,4 +81,7 @@ public class LoggingGame implements Game {
     public GameEventController getEventController() {
         return game.getEventController();
     }
+    
+    public void addObserver(GameObserver observer){
+    }
 }
