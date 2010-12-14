@@ -160,6 +160,22 @@ HotCiv build management.
     </java>
   </target>
 
+  <target name="movetool" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.TestMoveTool">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="endturntool" depends="build-all">
+    <java fork="yes" classname="hotciv.visual.TestEndTurnTool">
+      <classpath>
+	<path refid="class-path"/>
+      </classpath>
+    </java>
+  </target>
+
   <target name="test-logging"  depends="build-all">
     <java classname="org.junit.runner.JUnitCore">
       <arg value="hotciv.standard.TestLogging"/>
